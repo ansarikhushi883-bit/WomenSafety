@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SafeHer — My Safety Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .sidebar-logo{padding:1.4rem 1.5rem;border-bottom:1px solid rgba(240,96,122,.1);font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--accent);display:flex;align-items:center;gap:.5rem;}
+.sidebar-logo a{color:inherit;text-decoration:none;}
+.sidebar-logo small{color:rgba(255,255,255,.35);font-size:.7rem;font-family:'DM Sans',sans-serif;margin-top:4px;}
+.avatar-block{display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;}
+.avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--crimson),var(--rose));display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 6px 20px rgba(181,40,58,.3);}
+.avatar-info h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--text);margin-bottom:.25rem;}
+.avatar-info p{font-size:.85rem;color:var(--muted);}
+.avatar-info .role-tag{display:inline-flex;align-items:center;gap:.3rem;background:#fce8ec;color:var(--crimson);border:1px solid #f0b8c5;padding:.25rem .75rem;border-radius:100px;font-size:.72rem;font-weight:600;margin-top:.4rem;}
+.edit-btn{background:var(--crimson);color:#fff;border:none;padding:.5rem 1.25rem;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:600;cursor:pointer;margin-left:auto;transition:background .2s;}
+.edit-btn:hover{background:#8b1a2b;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;}
+.info-group{margin-bottom:1rem;}
+.info-group label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;display:block;margin-bottom:.3rem;}
+.info-group .val{font-size:.93rem;color:var(--text);font-weight:500;padding:.65rem 1rem;background:var(--cream);border:1px solid rgba(181,40,58,.1);border-radius:8px;}
+.info-group input,.info-group select{width:100%;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--text);font-weight:500;background:var(--cream);border:1px solid rgba(181,40,58,.16);border-radius:8px;padding:.72rem .85rem;outline:none;transition:border-color .2s,box-shadow .2s;}
+.info-group input:focus,.info-group select:focus{border-color:var(--rose);box-shadow:0 0 0 3px rgba(224,74,110,.12);}
+.profile-actions{display:flex;justify-content:flex-end;gap:.75rem;margin-top:.5rem;}
+.profile-save{background:var(--crimson);color:#fff;border:none;padding:.65rem 1.25rem;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:600;cursor:pointer;}
+.profile-save:hover{background:#8b1a2b;}
+.profile-reset{background:transparent;border:1px solid rgba(181,40,58,.2);color:var(--muted);padding:.65rem 1rem;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:600;cursor:pointer;}
+.profile-reset:hover{border-color:var(--crimson);color:var(--crimson);}
+.contacts-list{display:flex;flex-direction:column;gap:.75rem;}
+.contact-item{display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid rgba(181,40,58,.1);border-radius:10px;background:var(--cream);}
+.contact-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;flex-shrink:0;}
+.contact-info{flex:1;}
+.contact-info .cn{font-size:.9rem;font-weight:600;color:var(--text);}
+.contact-info .cr{font-size:.78rem;color:var(--muted);}
+.contact-info .cp{font-size:.82rem;color:var(--text);margin-top:.15rem;}
+.remove-btn{background:transparent;border:1px solid rgba(181,40,58,.2);color:var(--muted);padding:.35rem .8rem;border-radius:6px;font-size:.75rem;cursor:pointer;transition:all .2s;}
+.remove-btn:hover{border-color:var(--crimson);color:var(--crimson);}
+.add-contact-btn{width:100%;padding:.75rem;border-radius:8px;border:2px dashed rgba(181,40,58,.2);background:transparent;color:var(--rose);font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:.75rem;}
+.add-contact-btn:hover{border-color:var(--rose);background:#fef5f7;}
+.safety-score{background:var(--deep);border-radius:12px;padding:1.5rem;display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;}
+.score-ring{position:relative;width:80px;height:80px;flex-shrink:0;}
+.score-ring svg{transform:rotate(-90deg);}
+.score-ring .score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#fff;}
+.score-info h3{font-family:'Playfair Display',serif;color:var(--accent);font-size:1.1rem;margin-bottom:.3rem;}
+.score-info p{color:rgba(255,255,255,.55);font-size:.84rem;line-height:1.6;}
+.score-tips{margin-top:.75rem;display:flex;flex-direction:column;gap:.3rem;}
+.tip{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:rgba(255,255,255,.5);}
+.tip.done{color:#1a7a45;}
+.tip::before{content:'○';flex-shrink:0;}
+.tip.done::before{content:'✓';color:#1a7a45;}
+.recent-alerts-mini{display:flex;flex-direction:column;gap:.6rem;}
+.ram{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--cream);border-radius:8px;border:1px solid rgba(181,40,58,.08);}
+.ram-id{font-size:.75rem;font-weight:700;color:var(--crimson);min-width:52px;}
+.ram-loc{flex:1;font-size:.84rem;color:var(--text);}
+.ram-time{font-size:.75rem;color:var(--muted);}
+.ram-status{font-size:.7rem;font-weight:600;padding:.2rem .6rem;border-radius:100px;background:#e8f8f0;color:#1a7a45;border:1px solid #b8e8cc;}
+.toast{position:fixed;top:76px;right:1.5rem;z-index:600;background:#1a7a45;color:#fff;padding:.72rem 1.2rem;border-radius:10px;font-size:.84rem;font-weight:500;transform:translateX(120%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.toast.show{transform:translateX(0);}
+.sov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;}
+.sov.open{display:flex;}
+.smbox{background:var(--deep);border-radius:20px;padding:2.5rem;text-align:center;max-width:420px;width:90%;border:1px solid rgba(240,96,122,.3);}
+.smring{position:relative;width:160px;height:160px;margin:0 auto 1.5rem;}
+.r{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(240,96,122,.3);animation:sp 2s infinite;}
+.r:nth-child(2){inset:20px;animation-delay:.3s;}.r:nth-child(3){inset:40px;animation-delay:.6s;}
+@keyframes sp{0%,100%{transform:scale(1);opacity:.4;}50%{transform:scale(1.04);opacity:1;}}
+.rc2{position:absolute;inset:55px;border-radius:50%;background:linear-gradient(135deg,#b5283a,#e04a6e);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(176,40,58,.7);}
+.rc2 strong{font-size:1.3rem;color:#fff;letter-spacing:2px;}
+.smbox h2{font-family:'Playfair Display',serif;color:#fff;font-size:1.5rem;margin-bottom:.5rem;}
+.smbox p{color:rgba(255,255,255,.6);font-size:.9rem;line-height:1.7;margin-bottom:1.5rem;}
+.scd{font-size:2.5rem;font-weight:700;color:var(--accent);margin-bottom:1.25rem;}
+.smsg{font-size:.88rem;font-weight:600;margin-bottom:1.25rem;display:none;}
+.smsg.sa{color:var(--accent);}.smsg.sg{color:#1a7a45;}
+.scbtn{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:.6rem 1.5rem;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;transition:all .2s;}
+.scbtn:hover{border-color:rgba(255,255,255,.4);color:#fff;}
+@media(max-width:860px){.profile-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<aside class="sidebar"><div class="sidebar-logo"><a href="index.html">🛡️ SafeHer <small>v1.0</small></a></div><nav class="snav"><div class="snl">Overview</div><a class="sl" href="dashboard.html"><span class="sd"></span>Dashboard</a><a class="sl" href="problem.html"><span class="sd"></span>Problem Statement</a><a class="sl" href="objectives.html"><span class="sd"></span>Objectives</a><a class="sl" href="scope.html"><span class="sd"></span>Scope of Work</a><div class="snl">Platform</div><a class="sl" href="features.html"><span class="sd"></span>Features</a><a class="sl" href="nfr.html"><span class="sd"></span>Non-Functional Req.</a><a class="sl" href="tech.html"><span class="sd"></span>Technology Stack</a><div class="snl">Process</div><a class="sl" href="flow.html"><span class="sd"></span>User Flow</a><a class="sl" href="data.html"><span class="sd"></span>Data Requirements</a><a class="sl" href="kpi.html"><span class="sd"></span>KPIs</a><div class="snl">Project</div><a class="sl" href="constraints.html"><span class="sd"></span>Assumptions &amp; Constraints</a><a class="sl" href="impact.html"><span class="sd"></span>Deliverables &amp; Impact</a><a class="sl" href="future.html"><span class="sd"></span>Future Enhancements</a><div class="snl">My Account</div><a class="sl active" href="profile.html"><span></span>My Safety Profile</a><a class="sl" href="index.html"><span ></span>Sign Out</a>
+  </nav>
+  <div class="sbot"><button class="sos-sb" onclick="openSOS()">🚨 TRIGGER SOS DEMO</button></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="tl"><span class="ptag">My Account</span><span class="ttitle">My Safety Profile</span></div>
+    <div class="ta">
+      <div class="sbadge"><span class="sdot"></span>System Active</div>
+      <button class="tbtn" onclick="openSOS()">🚨 SOS Demo</button>
+    </div>
+  </header>
+  <div class="body">
+
+    <!-- No User Notice -->
+    <div id="no-user" style="display:none;padding:1rem;border:1px dashed #e04a6e;background:#fff7f8;margin-bottom:1rem;border-radius:8px;color:#8b1a2b;">No signed-in user found. <a href="index.html" style="color:#b5283a;font-weight:600;">Sign in / Register</a></div>
+
+    <!-- Profile Header -->
+    <div class="avatar-block">
+      <div class="avatar" id="avatar">PS</div>
+      <div class="avatar-info">
+        <h3 id="profile-name">Priya Sharma</h3>
+        <p id="profile-contact">priya.sharma@email.com · +91 98765 43210</p>
+        <span class="role-tag" id="role-tag">👩 Registered User</span>
+      </div>
+      <button class="edit-btn" onclick="editProfilePrompt()">✏️ Edit Profile</button>
+    </div>
+
+    <!-- Safety Score -->
+    <div class="safety-score">
+      <div class="score-ring">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/>
+          <circle id="score-progress" cx="40" cy="40" r="32" fill="none" stroke="url(#grad)" stroke-width="8" stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"/>
+          <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#b5283a"/><stop offset="100%" style="stop-color:#e04a6e"/></linearGradient></defs>
+        </svg>
+        <div class="score-num" id="safety-score-num">0</div>
+      </div>
+      <div class="score-info">
+        <h3 id="safety-score-title">Safety Score: 0 / 100</h3>
+        <p>Your profile is mostly complete. Complete the steps below to reach a 100% safety score and ensure maximum protection.</p>
+        <div class="score-tips">
+          <div class="tip" id="tip-profile">Profile completed</div>
+          <div class="tip" id="tip-two-contacts">2 emergency contacts added</div>
+          <div class="tip" id="tip-phone">Phone number verified</div>
+          <div class="tip" id="tip-three-contacts">Add a third emergency contact</div>
+        </div>
+      </div>
+    </div>
+
+    <form class="profile-grid" id="profile-form" onsubmit="saveProfileForm(event)">
+      <!-- Personal Info -->
+      <div class="card">
+        <div class="ctitle">👤 Personal Information</div>
+        <div class="info-group"><label for="edit-name">Full Name</label><input id="edit-name" type="text" autocomplete="name" required></div>
+        <div class="info-group"><label for="edit-dob">Date of Birth</label><input id="edit-dob" type="date"></div>
+        <div class="info-group"><label for="edit-phone">Phone Number</label><input id="edit-phone" type="tel" autocomplete="tel"></div>
+        <div class="info-group"><label for="edit-city">City / Location</label><input id="edit-city" type="text" autocomplete="address-level2"></div>
+        <div class="info-group"><label for="edit-blood">Blood Group</label><select id="edit-blood"><option value="">Select blood group</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+        <div class="info-group"><label for="edit-address">Address</label><input id="edit-address" type="text" autocomplete="street-address"></div>
+        <button class="edit-btn" type="button" style="margin:0;width:100%;margin-top:.5rem;" onclick="showToast('2FA setup email sent!')">Enable 2FA →</button>
+        <div class="profile-actions">
+          <button class="profile-reset" type="button" onclick="populateProfile()">Reset</button>
+          <button class="profile-save" type="submit">Save Information</button>
+        </div>
+      </div>
+
+      <!-- Account Info -->
+      <div class="card">
+        <div class="ctitle">🔐 Account &amp; Security</div>
+        <div class="info-group"><label for="edit-email">Email Address</label><input id="edit-email" type="email" autocomplete="email" required></div>
+        <div class="info-group"><label>Account Role</label><div class="val" id="roleVal">User</div></div>
+        <div class="info-group"><label>Account Status</label><div class="val" id="statusVal" style="color:#1a7a45;font-weight:600;">✅ Active &amp; Verified</div></div>
+        <div class="info-group"><label>Member Since</label><div class="val" id="memberSince">—</div></div>
+        <div class="info-group"><label>Last Login</label><div class="val" id="lastLogin">—</div></div>
+        <div class="info-group"><label>Two-Factor Auth</label><div class="val" id="twoFAVal" style="color:var(--crimson);font-weight:600;">⚠️ Not Enabled</div></div>
+        
+      </div>
+    </form>
+
+    <!-- Emergency Contacts -->
+    <div class="card">
+      <div class="ctitle">🆘 Emergency Contacts <span class="badge br" id="contacts-count">0 Added</span></div>
+      <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem;">These contacts are automatically notified with your live location when you trigger an SOS alert.</p>
+      <div class="contacts-list" id="contacts-list">
+        <!-- contacts populated dynamically -->
+      </div>
+      <button class="add-contact-btn" onclick="addContactPrompt()">+ Add Emergency Contact</button>
+    </div>
+
+    <!-- Recent Alert History -->
+    <div class="card">
+      <div class="ctitle" id="alert-history-title">🚨 My Alert History <span class="badge bm">Last 30 days</span></div>
+      <div class="recent-alerts-mini" id="alert-history-list">
+        <div class="ram"><div class="ram-id">#A-2041</div><div class="ram-loc">📍 Andheri West, Mumbai</div><div class="ram-time">Today 09:14 AM</div><span class="ram-status">Resolved</span></div>
+        <div class="ram"><div class="ram-id">#A-2035</div><div class="ram-loc">📍 Bandra Station</div><div class="ram-time">May 18, 08:45 PM</div><span class="ram-status">Resolved</span></div>
+        <div class="ram"><div class="ram-id">#A-2029</div><div class="ram-loc">📍 Juhu Beach Road</div><div class="ram-time">May 10, 11:30 PM</div><span class="ram-status">Resolved</span></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- SOS -->
+<div class="sov" id="sov">
+  <div class="smbox">
+    <div class="smring"><div class="r"></div><div class="r"></div><div class="r"></div><div class="rc2"><strong>SOS</strong></div></div>
+    <h2>Emergency Alert Sending</h2>
+    <p>Your live location is being shared with nearby volunteers and your emergency contacts.</p>
+    <div class="scd" id="scd">5</div>
+    <div class="smsg sa" id="sms1">📡 Broadcasting alert to 3 nearby volunteers...</div>
+    <div class="smsg sg" id="sms2">✅ Alert sent! Priya Rao is responding — 0.4 km away</div>
+    <button class="scbtn" id="scbtn" onclick="closeSOS()">Cancel Alert</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+var _st=null;
+var _alertTimer=null;
+var _alertSent=false;
+function openSOS(){var o=document.getElementById('sov');o.classList.add('open');_alertSent=false;var c=5,ce=document.getElementById('scd'),s1=document.getElementById('sms1'),s2=document.getElementById('sms2'),cb=document.getElementById('scbtn');ce.style.display='block';s1.style.display='none';s2.style.display='none';cb.textContent='Cancel Alert';ce.textContent=c;if(_st)clearInterval(_st);if(_alertTimer)clearTimeout(_alertTimer);_st=setInterval(function(){c--;if(c>0){ce.textContent=c;}else{clearInterval(_st);ce.style.display='none';s1.style.display='block';_alertTimer=setTimeout(function(){s1.style.display='none';s2.style.display='block';cb.textContent='Close';markAlertSent();},2000);}},1000);}
+function markAlertSent(){_alertSent=true;if(typeof recordSOSAlert==='function')recordSOSAlert();if(typeof renderSOSAlertHistory==='function')renderSOSAlertHistory();else{var title=document.getElementById('alert-history-title');if(title)title.innerHTML='🚨 My Alert History <span class="badge bm">Updated now</span>';}showToast('✅ Alert sent and history updated');}
+function closeSOS(){if(_st)clearInterval(_st);if(_alertTimer)clearTimeout(_alertTimer);document.getElementById('sov').classList.remove('open');showToast(_alertSent?'✅ Alert already sent':'✅ Alert successfully cancelled');}
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
+
+// Populate profile when page loads
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof populateProfile === 'function') populateProfile();
+});
+</script>
+</body>
+</html>
